@@ -1,9 +1,15 @@
 services:
   - type: web
-    name: video-restoration-gan
+    name: GAN-video
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: apt-get install -y libgl1 libglib2.0-0 && pip install -r requirements.txt
     startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: WEIGHTS_PATH
         value: saved_models/generator.pth
+      - key: WEIGHTS_URL
+        value: ""   # paste your direct download link here if weights are hosted remotely
+    disk:
+      name: model-weights
+      mountPath: /opt/render/project/src/saved_models
+      sizeGB: 2
